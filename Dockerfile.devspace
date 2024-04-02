@@ -1,0 +1,21 @@
+FROM ghcr.io/loft-sh/devspace-containers/go:1.20-alpine AS builder
+
+RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
+
+RUN apk add git curl
+
+WORKDIR /app
+
+COPY go.mod go.mod
+
+RUN go mod tidy
+
+RUN go install github.com/cosmtrek/air@latest
+
+COPY . .
+COPY ./devspace_start.sh ./devspace_start.sh
+RUN chmod +x ./devspace_start.sh
+
+EXPOSE 9000
+
+ENTRYPOINT [ "sh","devspace_start" ]

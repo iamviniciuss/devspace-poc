@@ -1,0 +1,5 @@
+Dockerfile
+Dockerfile.devspace
+
+# Ignore .git folder
+.git
